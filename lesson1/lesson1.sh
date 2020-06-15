@@ -121,3 +121,38 @@ mysql> SHOW DATABASES;
 
 mysql> EXIT
 # Bye
+
+# Установка mysql8 и Workbench на Windows. В командной строке проверка версии. Все работает.
+# Установила так как установщик Workbench потребовал много всего дополнительно поставить на мой ноут.
+# Проще было установить пакетом вместе с mysql.
+# В итоге могу подключаться и локально, и удаленно =)
+
+C:\Users\NELYUBINA>mysql -V
+# mysql  Ver 8.0.20 for Win64 on x86_64 (MySQL Community Server - GPL)
+C:\Users\NELYUBINA>mysql -u root -p
+# Enter password: ******
+# Welcome to the MySQL monitor.  Commands end with ; or \g.
+# Your MySQL connection id is 8
+# Server version: 8.0.20 MySQL Community Server - GPL
+
+# Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+# Oracle is a registered trademark of Oracle Corporation and/or its
+# affiliates. Other names may be trademarks of their respective
+# owners.
+
+# Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
+# +--------------------+
+# | Database           |
+# +--------------------+
+# | information_schema |
+# | mysql              |
+# | performance_schema |
+# | sys                |
+# +--------------------+
+# 4 rows in set (0.24 sec)
+
+mysql> EXIT
+# Bye
