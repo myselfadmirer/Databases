@@ -1,4 +1,4 @@
-/* Правки */
+/* РџСЂР°РІРєРё */
 
 USE vk;
 
@@ -68,16 +68,16 @@ community_id = floor(1 + rand() * 12), user_id = floor(1 + rand() * 100);
 desc communities_users;
 
 
-/* пост */
+/* РїРѕСЃС‚ */
 
 CREATE TABLE content (
-id serial PRIMARY KEY COMMENT "Идентификатор строки", 
-user_id INT UNSIGNED NOT NULL COMMENT "Ссылка на пользователя",
-name VARCHAR(100) NOT NULL COMMENT "заголовок",
-media int unsigned not NULL COMMENT "медиафайл",
-text_data longtext NOT NULL COMMENT "текст",
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания строки",  
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Время обновления строки");
+id serial PRIMARY KEY COMMENT "РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃС‚СЂРѕРєРё", 
+user_id INT UNSIGNED NOT NULL COMMENT "РЎСЃС‹Р»РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ",
+name VARCHAR(100) NOT NULL COMMENT "Р·Р°РіРѕР»РѕРІРѕРє",
+media int unsigned not NULL COMMENT "РјРµРґРёР°С„Р°Р№Р»",
+text_data longtext NOT NULL COMMENT "С‚РµРєСЃС‚",
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ СЃС‚СЂРѕРєРё",  
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "Р’СЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂРѕРєРё");
 select * from content;
 desc content;
 insert into content (user_id, name, media, text_data) values (
@@ -100,11 +100,14 @@ insert into content (user_id, name, media, text_data) values (
 );
 
 
-
-/* лайки */
-CREATE table likes (content_id INT UNSIGNED NOT NULL COMMENT "Ссылка на пост",
-user_id INT UNSIGNED NOT NULL COMMENT "Ссылка на пользователя, поставившего +", 
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Время создания");
+/* Р»Р°Р№РєРё */
+drop table if exists likes;
+CREATE table likes (
+id serial primary key comment "РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРµР№СЃРІРёСЏ",
+content_id INT UNSIGNED NOT NULL COMMENT "РЎСЃС‹Р»РєР° РЅР° РїРѕСЃС‚",
+user_id INT UNSIGNED NOT NULL unique COMMENT "РЎСЃС‹Р»РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РїРѕСЃС‚Р°РІРёРІС€РµРіРѕ +", 
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT "Р’СЂРµРјСЏ СЃРѕР·РґР°РЅРёСЏ");
+alter table likes add post
 select* from likes;
 insert into likes (content_id, user_id) values (
 (select id from content order by rand() limit 1),
