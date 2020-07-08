@@ -165,9 +165,13 @@ select concat('10 самых молодых пользователей полу�
     (select user_id, (year(now()) - year(birthday)) as age from profiles order by age limit 10) as young_users)), 
 ' лайков') as total; 
 
--- select count(*) as total from likes where target_id in 
---   (select user_id from 
---     (select user_id, (year(now()) - year(birthday)) as age from profiles order by age limit 10) as young_users); 
+-- Только лайки юсерам (не постам и тд)
+select count(*) as total from likes where target_id in 
+  (select user_id from 
+    (select user_id, (year(now()) - year(birthday)) as age from profiles order by age limit 10) as young_users)
+and target_id in (select id from target_types where name='users');
+
+select * from target_types;
 
 
 /* Найти 10 пользователей, которые проявляют наименьшую активность в использовании социальной сети
