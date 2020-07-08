@@ -150,7 +150,7 @@ desc likes;
 select if ((select gender from profiles where user_id in (select user_id from likes) 
 group by gender order by count(gender) desc limit 1)='f', 
 'женщины', 
-'мужчины') as 'Получили больше всего лайков';
+'мужчины') as 'Поставили больше всего лайков';
 
 -- select gender from profiles where user_id in (select user_id from likes) 
 -- group by gender order by count(gender) desc limit 1;
@@ -158,13 +158,17 @@ group by gender order by count(gender) desc limit 1)='f',
 
 /* Подсчитать общее количество лайков десяти самым молодым пользователям (сколько лайков получили 10 самых молодых пользователей). */
 
+-- для всех авктивностей пользователей
 select concat('10 самых молодых пользователей получили ', 
-(select count(*) as total from likes where user_id in (select user_id from (
-select user_id, (year(now()) - year(birthday)) as age from profiles where user_id in (select user_id from likes) order by age limit 10) as young)), 
+(select count(*) as total from likes where target_id in 
+  (select user_id from 
+    (select user_id, (year(now()) - year(birthday)) as age from profiles order by age limit 10) as young_users)), 
 ' лайков') as total; 
 
--- select count(*) as total from likes where user_id in (select user_id from (
--- select user_id, (year(now()) - year(birthday)) as age from profiles where user_id in (select user_id from likes) order by age limit 10) as young);
+-- select count(*) as total from likes where target_id in 
+--   (select user_id from 
+--     (select user_id, (year(now()) - year(birthday)) as age from profiles order by age limit 10) as young_users); 
+
 
 /* Найти 10 пользователей, которые проявляют наименьшую активность в использовании социальной сети
 (критерии активности необходимо определить самостоятельно) */
