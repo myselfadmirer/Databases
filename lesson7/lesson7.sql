@@ -57,3 +57,35 @@ join catalogs as c on
 -- Поля from, to и label содержат английские названия городов, поле name — русское. 
 -- Выведите список рейсов flights с русскими названиями городов.
 
+-- drop table if exists flights;
+-- Создаем таблицу flights
+create table if not exists flights(
+  id int unsigned not null auto_increment primary key,
+  `from` varchar(255),
+  `to` varchar(255));
+select * from flights;
+insert into flights(`from`, `to`) values
+  ('Moscow', 'Omsk'),
+  ('Novgorod', 'Kazan'),
+  ('Irkutsk', 'Moscow'),
+  ('Omsk', 'Irkutsk'),
+  ('Moscow', 'Kazan');
+
+-- Создаем таблицу cities
+create table if not exists cities(
+  label varchar(255),
+  name varchar(255));
+select * from cities;
+insert into cities(label, name) values
+  ('Moscow', 'Москва'),
+  ('Irkutsk', 'Ивкутск'),
+  ('Novgorod', 'Новгород'),
+  ('Kazan', 'Казань'),
+  ('Omsk', 'Омск');
+
+-- Формируем запрос
+-- С помощью вложенных запросов
+select id,
+(select name from cities where `from` = label) as `from`,
+(select name from cities where `to` = label) as `to`
+from flights;
