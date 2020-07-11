@@ -86,16 +86,18 @@ insert into cities(label, name) values
 -- Формируем запрос
 -- С помощью вложенных запросов
 select id,
-(select name from cities where `from` = label) as `from`,
-(select name from cities where `to` = label) as `to`
-from flights;
+  (select name from cities where `from` = label) as `from`,
+  (select name from cities where `to` = label) as `to`
+  from flights;
 
 -- С помощью join
-select f.id,
-c.name as `from`,
-c1.name as `to` 
-from flights as f
-left join cities as c
-on f.`from` = c.label
-left join cities as c1
-on f.`to` = c1.label;
+select
+    f.id,
+    c.name as `from`,
+    c1.name as `to`
+from
+    flights as f
+left join cities as c on
+    f.`from` = c.label
+left join cities as c1 on
+    f.`to` = c1.label;
