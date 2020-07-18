@@ -61,7 +61,7 @@ select sum(likes) as total_likes from total;
 (критерии активности необходимо определить самостоятельно).
 
 select concat(u.first_name, ' ', u.last_name),
-(count(l.user_id) + count(m.user_id ) + count(msg.from_user_id)) as activity 
+(count(distinct l.user_id) + count(distinct m.user_id ) + count(distinct msg.from_user_id)) as activity 
   from users as u
     left join likes as l
       on u.id = l.user_id 
