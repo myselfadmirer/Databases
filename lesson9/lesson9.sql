@@ -51,16 +51,16 @@ begin
     declare hello varchar(255);
     declare c_time time;
     set c_time = date_format(now(), '%H:%i:%s');
-    if (c_time between time('06:00') and time('12:00')) then
+    if (c_time between time('06:00') and time('11:59:59')) then
       select 'Доброе утро!' into hello;
     end if ;
-    if (c_time between time('12:00') and time('18:00')) then
+    if (c_time between time('12:00') and time('17:59:59')) then
       select 'Добрый день!' into hello;
     end if ;
     if (c_time between time('18:00') and time('23:59:59')) then
       select 'Добрый вечер!' into hello;
     end if ;
-    if (c_time between time('00:00') and time('06:00')) then
+    if (c_time between time('00:00') and time('05:59:59')) then
       select 'Доброй ночи!' into hello;
     end if ;
 return hello;
