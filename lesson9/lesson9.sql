@@ -4,29 +4,39 @@
 -- Переместите запись id = 1 из таблицы shop.users в таблицу sample.users. 
 -- Используйте транзакции.
 -- 
--- start transaction;
--- insert into sample.users select * from shop.users where shop.users.id = 1;
--- delete from shop.users where id = 1;
--- commit;
+start transaction;
+insert into sample.users select * from shop.users where shop.users.id = 1;
+delete from shop.users where id = 1;
+commit;
 -- 
 -- 
 -- 2. Создайте представление, которое выводит название name товарной позиции из таблицы products 
 -- и соответствующее название каталога name из таблицы catalogs.
 -- 
--- create view `position` as
---   select p.name, c.name as `catalog`
---     from products as p
---     left join catalogs as c
---       on c.id = p.catalog_id;
+create view `position` as
+  select p.name, c.name as `catalog`
+    from products as p
+    left join catalogs as c
+      on c.id = p.catalog_id;
+
+select * from `position`;
 -- 
--- select * from `position`;
+-- 3. по желанию) Пусть имеется таблица с календарным полем created_at. В ней размещены разряженые календарные записи за август 2018 года '2018-08-01', 
+-- '2016-08-04', '2018-08-16' и 2018-08-17. 
+-- Составьте запрос, который выводит полный список дат за август, выставляя в соседнем поле значение 1, если дата присутствует в исходном таблице и 0, 
+-- если она отсутствует.
 -- 
--- 3. по желанию) Пусть имеется таблица с календарным полем created_at. В ней размещены разряженые календарные записи за август 2018 года '2018-08-01', '2016-08-04', '2018-08-16' и 2018-08-17. 
--- Составьте запрос, который выводит полный список дат за август, выставляя в соседнем поле значение 1, если дата присутствует в исходном таблице и 0, если она отсутствует.
+drop table if exists my_dates;
+create table my_dates(
+created_at datetime not null);
+
+insert into my_dates values ('2018-08-01'), ('2016-08-04'), ('2018-08-16'), ('2018-08-17');
+select * from my_dates;
+
+
 -- 
--- 
--- 
--- 4. (по желанию) Пусть имеется любая таблица с календарным полем created_at. Создайте запрос, который удаляет устаревшие записи из таблицы, оставляя только 5 самых свежих записей.
+-- 4. (по желанию) Пусть имеется любая таблица с календарным полем created_at. Создайте запрос, который удаляет устаревшие записи из таблицы, 
+-- оставляя только 5 самых свежих записей.
 -- 
 -- 
 -- 
@@ -46,7 +56,7 @@
 drop function if exists hello;
 delimiter //
 create function hello() 
-returns varchar(255) reads sql data
+returns varchar(255) no sql
 begin
     declare hello varchar(255);
     declare c_time time;
