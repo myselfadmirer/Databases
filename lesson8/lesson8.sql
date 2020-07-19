@@ -18,7 +18,7 @@ limit 1;
 -- С вложенным запросом:
 
 select sum(total) as total_youngest from (
-select p.user_id, p.birthday, l.target_id, count(l.target_id) as total 
+select p.user_id, p.birthday, l.target_id, count(distinct l.target_id) as total 
   from profiles as p
     left join likes as l
       on l.target_id = p.user_id 
