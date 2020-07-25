@@ -30,15 +30,15 @@ create index posts_views_counter_idx on posts(views_counter);
 -- всего пользователей в системе !
 -- отношение в процентах (общее количество пользователей в группе / всего пользователей в системе) * 100
 
-SELECT DISTINCT c.name, 
-count(cu.user_id) over() / max(c.id) over() as average,
+SELECT DISTINCT c.name,
+count(cu.user_id) over() / first_value(c.id) over(order by c.id desc) as average,
 first_value(concat(u.first_name, ' ', u.last_name)) over(partition by cu.community_id order by p.birthday desc) as youngest_user,
 max(p.birthday) over w as birthday_youngest,
 first_value(concat(u.first_name, ' ', u.last_name)) over(partition by cu.community_id order by p.birthday) as oldest_user,
 min(p.birthday) over w as birthday_oldest,
 count(cu.user_id) over w as per_group,
-count(u.id) over() as total,
-count(cu.user_id) over w / count(u.id) over() * 100 as `%%`
+first_value(u.id) over(order by u.id desc) as total,
+count(cu.user_id) over w / first_value(u.id) over(order by u.id desc) * 100 as `%%`
     FROM communities as c
     left join communities_users as cu
       ON cu.community_id = c.id
@@ -47,7 +47,7 @@ count(cu.user_id) over w / count(u.id) over() * 100 as `%%`
     left join profiles as p
       on cu.user_id = p.user_id 
         WINDOW w AS (PARTITION BY cu.community_id);
-    
+
 -- Запросы для проверки значений:
 
 -- Дни рождения
@@ -77,6 +77,29 @@ count(cu.user_id) over w / count(u.id) over() * 100 as `%%`
 
 -- select * from communities;
 -- select * from communities_users;
+
+-- Пыталась сделать свои функции для испоьзования. Оставила на памать
+-- delimiter //
+-- drop function if exists total_users//
+-- create function total_users()
+-- returns bigint deterministic
+-- begin
+--     declare total bigint;
+--     select count(distinct users.id) into total from users;
+-- return total;
+-- end
+-- delimiter ;
+-- 
+-- delimiter //
+-- drop function if exists total_communities//
+-- create function total_communities()
+-- returns bigint deterministic
+-- begin
+--     declare total bigint;
+--     select count(distinct communities.id) into total from communities;
+-- return total;
+-- end
+-- delimiter ;
 
 -- 3. (по желанию) Задание на денормализацию
 -- Разобраться как построен и работает следующий запрос:
